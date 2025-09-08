@@ -21,8 +21,8 @@ final class Profile extends Component
      */
     public function mount(): void
     {
-        $this->name = Auth::user()->name;
-        $this->email = Auth::user()->email;
+        $this->name = Auth::user()->name ?? '';
+        $this->email = Auth::user()->email ?? '';
     }
 
     /**
@@ -32,6 +32,7 @@ final class Profile extends Component
     {
         $user = Auth::user();
 
+        /** @var array{name: string, email: string} $validated */
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],
 
@@ -41,19 +42,19 @@ final class Profile extends Component
                 'lowercase',
                 'email',
                 'max:255',
-                Rule::unique(User::class)->ignore($user->id),
+                Rule::unique(User::class)->ignore($user?->id),
             ],
         ]);
 
-        $user->fill($validated);
+        $user?->fill($validated);
 
-        if ($user->isDirty('email')) {
+        if ($user?->isDirty('email')) {
             $user->email_verified_at = null;
         }
 
-        $user->save();
+        $user?->save();
 
-        $this->dispatch('profile-updated', name: $user->name);
+        $this->dispatch('profile-updated', name: $user->name ?? '');
     }
 
     /**
@@ -63,13 +64,13 @@ final class Profile extends Component
     {
         $user = Auth::user();
 
-        if ($user->hasVerifiedEmail()) {
+        if ($user?->hasVerifiedEmail()) {
             $this->redirectIntended(default: route('dashboard', absolute: false));
 
             return;
         }
 
-        $user->sendEmailVerificationNotification();
+        $user?->sendEmailVerificationNotification();
 
         Session::flash('status', 'verification-link-sent');
     }

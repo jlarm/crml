@@ -51,27 +51,35 @@ final class ResetPassword extends Component
         // will update the password on an actual user model and persist it to the
         // database. Otherwise we will parse the error and return the response.
         $status = Password::reset(
-            $this->only('email', 'password', 'password_confirmation', 'token'),
-            function ($user): void {
-                $user->forceFill([
-                    'password' => Hash::make($this->password),
-                    'remember_token' => Str::random(60),
-                ])->save();
+            [
+                'email' => $this->email,
+                'password' => $this->password,
+                'password_confirmation' => $this->password_confirmation,
+                'token' => $this->token,
+            ],
+            function (mixed $user): void {
+                if ($user instanceof \Illuminate\Contracts\Auth\Authenticatable) {
+                    $user->forceFill([
+                        'password' => Hash::make($this->password),
+                        'remember_token' => Str::random(60),
+                    ])->save();
 
-                event(new PasswordReset($user));
+                    event(new PasswordReset($user));
+                }
             }
         );
 
         // If the password was successfully reset, we will redirect the user back to
         // the application's home authenticated view. If there is an error we can
         // redirect them back to where they came from with their error message.
-        if ($status !== Password::PasswordReset) {
-            $this->addError('email', __($status));
+        if ($status !== Password::PASSWORD_RESET) {
+            $errorKey = is_string($status) ? $status : 'passwords.failed';
+            $this->addError('email', __($errorKey));
 
             return;
         }
 
-        Session::flash('status', __($status));
+        Session::flash('status', __('passwords.reset'));
 
         $this->redirectRoute('login', navigate: true);
     }

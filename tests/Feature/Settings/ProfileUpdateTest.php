@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Livewire\Settings\Profile;
 use App\Models\User;
+use Illuminate\Support\Facades\Notification;
 use Livewire\Livewire;
 
 uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
@@ -77,4 +78,30 @@ test('correct password must be provided to delete account', function () {
     $response->assertHasErrors(['password']);
 
     expect($user->fresh())->not->toBeNull();
+});
+
+test('user can resend email verification notification', function () {
+    $user = User::factory()->unverified()->create();
+
+    expect($user->hasVerifiedEmail())->toBeFalse();
+
+    Notification::fake();
+
+    $this->actingAs($user);
+
+    Livewire::test(Profile::class)
+        ->call('resendVerificationNotification');
+
+    Notification::assertSentTo($user, Illuminate\Auth\Notifications\VerifyEmail::class);
+});
+
+test('verified user cannot resend verification notification', function () {
+    $user = User::factory()->create(); // Already verified
+
+    $this->actingAs($user);
+
+    $response = Livewire::test(Profile::class)
+        ->call('resendVerificationNotification');
+
+    $response->assertRedirect(route('dashboard', absolute: false));
 });

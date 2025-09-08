@@ -28,6 +28,7 @@ final class Register extends Component
      */
     public function register(): void
     {
+        /** @var array{name: string, email: string, password: string} $validated */
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],

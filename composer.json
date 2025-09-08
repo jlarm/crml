@@ -39,7 +39,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "tests/"
+            "Tests\\": "tests/",
+            "Modules\\":  "modules/"
         }
     },
     "scripts": {
@@ -69,7 +70,7 @@
         "test:types": "phpstan analyse",
         "test:arch": "pest --filter=arch",
         "test:type-coverage": "pest --type-coverage --min=100",
-        "test:unit": "pest --parallel --coverage --exactly=99.5",
+        "test:unit": "pest --parallel --coverage --exactly=100",
         "test": [
             "@test:lint",
             "@test:refactor",
