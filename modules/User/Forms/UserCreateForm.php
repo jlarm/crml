@@ -21,7 +21,7 @@ final class UserCreateForm extends Form
     public ?string $phone = null;
 
     #[Validate('required', 'string', 'max:255')]
-    public ?string $timezone = null;
+    public string $timezone = '';
 
     public function store(UserCreationService $userCreationService): void
     {

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Modules\User\Services;
 
+use Illuminate\Support\Str;
 use Modules\User\Contracts\UserRepositoryInterface;
 use Modules\User\DTOs\CreateUserData;
 use Modules\User\Events\UserCreated;
 use Modules\User\Models\User;
-use Str;
 
 final class UserCreationService
 {

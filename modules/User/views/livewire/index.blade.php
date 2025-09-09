@@ -6,7 +6,7 @@
     </flux:table.columns>
     <flux:table.rows>
         @forelse($this->users as $user)
-            <flux:table.row>
+            <flux:table.row wire:key="user-{{ $user->id }}">
                 <flux:table.cell>{{ $user->name }}</flux:table.cell>
                 <flux:table.cell>{{ $user->timezone ?? '-' }}</flux:table.cell>
                 <flux:table.cell align="end">View</flux:table.cell>

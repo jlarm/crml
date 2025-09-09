@@ -17,15 +17,23 @@
         </flux:field>
 
         <flux:field>
+            <flux:label>Phone</flux:label>
+
+            <flux:input wire:model="form.phone" type="text" />
+
+            <flux:error name="phone" />
+        </flux:field>
+
+        <flux:field>
             <flux:label>Timezone</flux:label>
 
-            <flux:select wire:model="form.timezone" vavriant="listbox" searchable>
+            <flux:select wire:model="form.timezone" variant="listbox" searchable>
                 @foreach($this->timezones() as $timezone)
                     <flux:select.option>{{ $timezone }}</flux:select.option>
                 @endforeach
             </flux:select>
 
-            <flux:error name="email" />
+            <flux:error name="timezone" />
         </flux:field>
 
         <div class="flex gap-x-2">
