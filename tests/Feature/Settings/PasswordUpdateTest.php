@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use App\Domains\User\Models\User;
 use App\Livewire\Settings\Password;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Livewire;
+use Modules\User\Models\User;
 
 uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
 

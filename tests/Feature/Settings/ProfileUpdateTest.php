@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use App\Domains\User\Models\User;
 use App\Livewire\Settings\Profile;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Livewire;
+use Modules\User\Models\User;
 
 uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
 

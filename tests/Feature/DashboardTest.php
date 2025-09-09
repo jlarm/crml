@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Domains\User\Models\User;
+use Modules\User\Models\User;
 
 uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
 

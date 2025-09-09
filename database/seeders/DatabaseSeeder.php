@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
-use App\Domains\User\Models\User;
 use Illuminate\Database\Seeder;
+use Modules\User\Models\User;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 

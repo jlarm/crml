@@ -7,8 +7,8 @@ namespace App\Domains\User\Repositories;
 use App\Domains\User\Contracts\UserRepositoryInterface;
 use App\Domains\User\DTOs\CreateUserDTO;
 use App\Domains\User\DTOs\UpdateUserDTO;
-use App\Domains\User\Models\User;
 use Illuminate\Database\Eloquent\Collection;
+use Modules\User\Models\User;
 
 final class UserRepository implements UserRepositoryInterface
 {

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Livewire\Auth;
 
-use App\Domains\User\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use Modules\User\Models\User;
 
 #[Layout('components.layouts.auth')]
 final class Register extends Component
