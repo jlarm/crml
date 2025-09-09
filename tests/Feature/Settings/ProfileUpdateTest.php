@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Domains\User\Models\User;
 use App\Livewire\Settings\Profile;
-use App\Models\User;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Livewire;
 

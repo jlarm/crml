@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Domains\User\Models\User;
 use App\Livewire\Auth\VerifyEmail;
-use App\Models\User;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;

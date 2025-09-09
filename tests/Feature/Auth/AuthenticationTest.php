@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Domains\User\Models\User;
 use App\Livewire\Auth\Login;
-use App\Models\User;
 use Livewire\Livewire;
 
 uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
