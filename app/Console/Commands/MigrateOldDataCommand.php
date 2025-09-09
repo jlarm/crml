@@ -19,6 +19,7 @@ final class MigrateOldDataCommand extends Command
             'name' => 'name',
             'email' => 'email',
             'phone' => 'phone',
+            'timezone' => 'timezone',
             'email_verified_at' => 'email_verified_at',
             'password' => 'password',
             'created_at' => 'created_at',

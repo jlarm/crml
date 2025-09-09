@@ -4,4 +4,6 @@ declare(strict_types=1);
 
 use Illuminate\Support\Facades\Route;
 
-Route::view('users', 'user::index');
+Route::middleware(['auth'])->group(function () {
+    Route::view('users', 'user::index')->name('user.index');
+});

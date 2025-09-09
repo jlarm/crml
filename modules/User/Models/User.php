@@ -9,10 +9,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
+use Modules\User\Database\Factories\UserFactory;
 
 final class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
+    /** @use HasFactory<\Modules\User\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
     /**
@@ -24,6 +25,7 @@ final class User extends Authenticatable
         'name',
         'email',
         'phone',
+        'timezone',
         'password',
     ];
 
@@ -47,6 +49,11 @@ final class User extends Authenticatable
             ->take(2)
             ->map(fn (string $word): string => Str::substr($word, 0, 1))
             ->implode('');
+    }
+
+    protected static function newFactory()
+    {
+        return UserFactory::new();
     }
 
     /**
