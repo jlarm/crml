@@ -27,6 +27,20 @@
                 @endif
             </div>
 
+            <flux:input wire:model="phone" :label="__('Phone Number')" mask="999-999-9999" type="text" autocomplete="phone" />
+
+            <flux:field>
+                <flux:label>Timezone</flux:label>
+
+                <flux:select wire:model="timezone" variant="listbox" searchable>
+                    @foreach($this->timezones() as $timezone)
+                        <flux:select.option>{{ $timezone }}</flux:select.option>
+                    @endforeach
+                </flux:select>
+
+                <flux:error name="timezone" />
+            </flux:field>
+
             <div class="flex items-center gap-4">
                 <div class="flex items-center justify-end">
                     <flux:button variant="primary" type="submit" class="w-full">{{ __('Save') }}</flux:button>

@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Livewire\Settings;
 
+use DateTimeZone;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
+use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Modules\User\Models\User;
 
@@ -16,6 +18,10 @@ final class Profile extends Component
 
     public string $email = '';
 
+    public string $phone = '';
+
+    public string $timezone = '';
+
     /**
      * Mount the component.
      */
@@ -23,6 +29,8 @@ final class Profile extends Component
     {
         $this->name = Auth::user()->name ?? '';
         $this->email = Auth::user()->email ?? '';
+        $this->phone = Auth::user()->phone ?? '';
+        $this->timezone = Auth::user()->timezone ?? '';
     }
 
     /**
@@ -44,6 +52,10 @@ final class Profile extends Component
                 'max:255',
                 Rule::unique(User::class)->ignore($user?->id),
             ],
+
+            'phone' => ['nullable', 'string', 'max:255'],
+
+            'timezone' => ['nullable', 'string', 'max:255'],
         ]);
 
         $user?->fill($validated);
@@ -73,5 +85,14 @@ final class Profile extends Component
         $user?->sendEmailVerificationNotification();
 
         Session::flash('status', 'verification-link-sent');
+    }
+
+    #[Computed]
+    public function timezones(): array
+    {
+        return DateTimeZone::listIdentifiers(
+            timezoneGroup: DateTimeZone::PER_COUNTRY,
+            countryCode: 'US',
+        );
     }
 }
