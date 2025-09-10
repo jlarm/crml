@@ -13,7 +13,7 @@ use Modules\User\Models\User;
 final class UserCreationService
 {
     public function __construct(
-        private UserRepositoryInterface $userRepository,
+        private readonly UserRepositoryInterface $userRepository,
     ) {}
 
     public function create(CreateUserData $userData): User
@@ -27,7 +27,7 @@ final class UserCreationService
 
         $user = $this->userRepository->create($userDataWithPassword);
 
-        event(new UserCreated($user, $generatedPassword));
+        event(new UserCreated($user));
 
         return $user;
     }

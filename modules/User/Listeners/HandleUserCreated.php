@@ -13,7 +13,7 @@ use Modules\User\Mail\NewUserEmail;
 final class HandleUserCreated
 {
     public function __construct(
-        private PasswordBrokerManager $passwordBrokerManager
+        private readonly PasswordBrokerManager $passwordBrokerManager
     ) {}
 
     public function handle(UserCreated $event): void
