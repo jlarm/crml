@@ -25,6 +25,23 @@ final class MigrateOldDataCommand extends Command
             'created_at' => 'created_at',
             'updated_at' => 'updated_at',
         ],
+        'dealerships' => [
+          'name' => 'name',
+          'address' => 'address',
+          'city' => 'city',
+          'state' => 'state',
+          'zip_code' => 'zip_code',
+          'phone' => 'phone',
+          'email' => 'email',
+          'notes' => 'notes',
+          'status' => 'status',
+          'rating' => 'rating',
+          'type' => 'type',
+          'in_development' => 'in_development',
+          'dev_status' => 'dev_status',
+          'created_at' => 'created_at',
+          'updated_at' => 'updated_at',
+        ],
     ];
 
     public function handle(): void
