@@ -36,6 +36,14 @@
             <flux:error name="timezone" />
         </flux:field>
 
+        <flux:field variant="inline">
+            <flux:checkbox wire:model="form.isAdmin" />
+
+            <flux:label>This user will be an admin</flux:label>
+
+            <flux:error name="form.isAdmin" />
+        </flux:field>
+
         <div class="flex gap-x-2">
             <flux:button type="submit" variant="primary">Submit</flux:button>
             <flux:button wire:navigate href="{{ route('user.index') }}">Cancel</flux:button>

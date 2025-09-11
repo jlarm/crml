@@ -27,10 +27,11 @@ final class Profile extends Component
      */
     public function mount(): void
     {
-        $this->name = Auth::user()->name ?? '';
-        $this->email = Auth::user()->email ?? '';
-        $this->phone = Auth::user()->phone ?? '';
-        $this->timezone = Auth::user()->timezone ?? '';
+        $user = Auth::user();
+        $this->name = $user->name ?? '';
+        $this->email = $user->email ?? '';
+        $this->phone = $user->phone ?? '';
+        $this->timezone = $user->timezone ?? '';
     }
 
     /**
@@ -87,6 +88,9 @@ final class Profile extends Component
         Session::flash('status', 'verification-link-sent');
     }
 
+    /**
+     * @return array<int, string>
+     */
     #[Computed]
     public function timezones(): array
     {

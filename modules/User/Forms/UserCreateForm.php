@@ -23,6 +23,9 @@ final class UserCreateForm extends Form
     #[Validate('required', 'string', 'max:255')]
     public string $timezone = '';
 
+    #[Validate('nullable', 'bool')]
+    public bool $isAdmin;
+
     public function store(UserCreationService $userCreationService): void
     {
         $this->validate();
@@ -32,10 +35,13 @@ final class UserCreateForm extends Form
             'email' => $this->email,
             'phone' => $this->phone,
             'timezone' => $this->timezone,
+            'is_admin' => $this->isAdmin,
         ]);
 
         $user = $userCreationService->create($userData);
 
-        $this->reset();
+        $this->reset(['name', 'email', 'phone', 'timezone']);
+
+        $this->isAdmin = false;
     }
 }

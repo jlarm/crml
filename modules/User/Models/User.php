@@ -11,6 +11,19 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Modules\User\Database\Factories\UserFactory;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $email
+ * @property \Carbon\Carbon|null $email_verified_at
+ * @property string|null $phone
+ * @property string|null $timezone
+ * @property bool $is_admin
+ * @property string $password
+ * @property string|null $remember_token
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ */
 final class User extends Authenticatable
 {
     /** @use HasFactory<\Modules\User\Database\Factories\UserFactory> */
@@ -26,6 +39,7 @@ final class User extends Authenticatable
         'email',
         'phone',
         'timezone',
+        'is_admin',
         'password',
     ];
 
@@ -37,6 +51,10 @@ final class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+    ];
+
+    protected $casts = [
+        'is_admin' => 'boolean',
     ];
 
     /**

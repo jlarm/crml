@@ -13,6 +13,7 @@ final readonly class UserData
         public string $email,
         public string $phone,
         public string $timezone,
+        public bool $is_admin,
     ) {}
 
     public static function fromArray(array $data): self
@@ -22,6 +23,7 @@ final readonly class UserData
             email: $data['email'],
             phone: $data['phone'] ?? null,
             timezone: $data['timezone'] ?? null,
+            is_admin: $data['is_admin'],
         );
     }
 
@@ -32,6 +34,7 @@ final readonly class UserData
             email: $user->email,
             phone: $user->phone,
             timezone: $user->timezone,
+            is_admin: false,
         );
     }
 
@@ -42,6 +45,7 @@ final readonly class UserData
             'email' => $this->email,
             'phone' => $this->phone,
             'timezone' => $this->timezone,
+            'is_admin' => $this->is_admin,
         ];
     }
 }

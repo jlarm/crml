@@ -9,9 +9,10 @@ final class CreateUserData
     public function __construct(
         public string $name,
         public string $email,
-        public ?string $password = null,
-        public ?string $phone = null,
-        public ?string $timezone = null,
+        public ?string $password,
+        public ?string $phone,
+        public ?string $timezone,
+        public bool $is_admin,
     ) {}
 
     public static function fromRequest(array $request): self
@@ -22,6 +23,7 @@ final class CreateUserData
             password: $request['password'] ?? null,
             phone: $request['phone'] ?? null,
             timezone: $request['timezone'] ?? null,
+            is_admin: $request['is_admin'] ?? false,
         );
     }
 
@@ -33,6 +35,7 @@ final class CreateUserData
             password: $hashedPassword,
             phone: $userData->phone,
             timezone: $userData->timezone,
+            is_admin: $userData->is_admin,
         );
     }
 
@@ -44,6 +47,7 @@ final class CreateUserData
             'password' => $this->password,
             'phone' => $this->phone,
             'timezone' => $this->timezone,
+            'is_admin' => $this->is_admin,
         ];
     }
 }

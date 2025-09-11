@@ -10,10 +10,10 @@ use Illuminate\Support\Facades\Mail;
 use Modules\User\Events\UserCreated;
 use Modules\User\Mail\NewUserEmail;
 
-final class HandleUserCreated
+final readonly class HandleUserCreated
 {
     public function __construct(
-        private readonly PasswordBrokerManager $passwordBrokerManager
+        private PasswordBrokerManager $passwordBrokerManager
     ) {}
 
     public function handle(UserCreated $event): void

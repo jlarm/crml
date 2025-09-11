@@ -10,10 +10,10 @@ use Modules\User\DTOs\CreateUserData;
 use Modules\User\Events\UserCreated;
 use Modules\User\Models\User;
 
-final class UserCreationService
+final readonly class UserCreationService
 {
     public function __construct(
-        private readonly UserRepositoryInterface $userRepository,
+        private UserRepositoryInterface $userRepository,
     ) {}
 
     public function create(CreateUserData $userData): User

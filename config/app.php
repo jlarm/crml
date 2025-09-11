@@ -69,6 +69,8 @@ return [
 
     'timezone' => 'UTC',
 
+    'timezone_display' => 'America/Chicago',
+
     /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration
