@@ -26,22 +26,38 @@ final class MigrateOldDataCommand extends Command
             'updated_at' => 'updated_at',
         ],
         'dealerships' => [
-          'name' => 'name',
-          'address' => 'address',
-          'city' => 'city',
-          'state' => 'state',
-          'zip_code' => 'zip_code',
-          'phone' => 'phone',
-          'email' => 'email',
-          'notes' => 'notes',
-          'status' => 'status',
-          'rating' => 'rating',
-          'type' => 'type',
-          'in_development' => 'in_development',
-          'dev_status' => 'dev_status',
-          'created_at' => 'created_at',
-          'updated_at' => 'updated_at',
+            'id' => 'id',
+            'name' => 'name',
+            'address' => 'address',
+            'city' => 'city',
+            'state' => 'state',
+            'zip_code' => 'zip_code',
+            'phone' => 'phone',
+            'email' => 'email',
+            'notes' => 'notes',
+            'status' => 'status',
+            'rating' => 'rating',
+            'type' => 'type',
+            'in_development' => 'in_development',
+            'dev_status' => 'dev_status',
+            'created_at' => 'created_at',
+            'updated_at' => 'updated_at',
         ],
+        'current_solutions' => [
+            'id' => 'dealership_id',
+            'current_solution_name' => 'name',
+            'current_solution_use' => 'use',
+            'created_at' => 'created_at',
+            'updated_at' => 'updated_at',
+        ],
+    ];
+
+    private array $requiredFields = [
+        'current_solutions' => ['current_solution_name', 'current_solution_use'],
+    ];
+
+    private array $sourceTableMappings = [
+        'current_solutions' => 'dealerships',
     ];
 
     public function handle(): void
@@ -70,7 +86,9 @@ final class MigrateOldDataCommand extends Command
             return;
         }
 
-        $this->info("Migrating table: $table from {$fromConnection} to {$toConnection}...");
+        $sourceTable = $this->sourceTableMappings[$table] ?? $table;
+
+        $this->info("Migrating table: {$sourceTable} -> {$table} from {$fromConnection} to {$toConnection}...");
 
         // Test connections first
         try {
@@ -98,7 +116,7 @@ final class MigrateOldDataCommand extends Command
 
         // Get total count for progress tracking
         try {
-            $totalRows = DB::connection($fromConnection)->table($table)->count();
+            $totalRows = DB::connection($fromConnection)->table($sourceTable)->count();
             $this->info("Found {$totalRows} rows to migrate");
         } catch (Exception $e) {
             $this->error('Failed to query source table: '.$e->getMessage());
@@ -118,7 +136,7 @@ final class MigrateOldDataCommand extends Command
         // Process in chunks to avoid memory and timeout issues
         try {
             DB::connection($fromConnection)
-                ->table($table)
+                ->table($sourceTable)
                 ->orderBy('id')
                 ->chunk($chunkSize, function ($rows) use ($table, $toConnection, &$count): void {
                     $batchData = [];
@@ -135,6 +153,11 @@ final class MigrateOldDataCommand extends Command
                             } elseif (is_string($newCol)) {
                                 $data[$newCol] = $value;
                             }
+                        }
+
+                        // Skip record if required fields are empty
+                        if ($this->shouldSkipRecord($table, $row)) {
+                            continue;
                         }
 
                         $batchData[] = $data;
@@ -211,10 +234,11 @@ final class MigrateOldDataCommand extends Command
     {
         $count = 0;
         $chunkSize = 1000;
+        $sourceTable = $this->sourceTableMappings[$table] ?? $table;
 
         // Get total rows
         $totalRows = DB::connection($toConnection)
-            ->table("{$tempDb}.{$table}")
+            ->table("{$tempDb}.{$sourceTable}")
             ->count();
 
         $this->info("Found {$totalRows} rows in dump file");
@@ -225,7 +249,7 @@ final class MigrateOldDataCommand extends Command
 
         // Process in chunks
         DB::connection($toConnection)
-            ->table("{$tempDb}.{$table}")
+            ->table("{$tempDb}.{$sourceTable}")
             ->orderBy('id')
             ->chunk($chunkSize, function ($rows) use ($table, $toConnection, &$count): void {
                 $batchData = [];
@@ -244,6 +268,11 @@ final class MigrateOldDataCommand extends Command
                         }
                     }
 
+                    // Skip record if required fields are empty
+                    if ($this->shouldSkipRecord($table, $row)) {
+                        continue;
+                    }
+
                     $batchData[] = $data;
                 }
 
@@ -255,5 +284,22 @@ final class MigrateOldDataCommand extends Command
             });
 
         $this->info("Successfully migrated {$count} rows into {$table}");
+    }
+
+    private function shouldSkipRecord(string $table, object $row): bool
+    {
+        if (! isset($this->requiredFields[$table])) {
+            return false;
+        }
+
+        foreach ($this->requiredFields[$table] as $requiredField) {
+            $value = $row->$requiredField ?? null;
+
+            if (empty($value)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

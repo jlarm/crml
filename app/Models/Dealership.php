@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 final class Dealership extends Model
 {
@@ -27,4 +28,9 @@ final class Dealership extends Model
     protected $casts = [
         'status' => 'boolean',
     ];
+
+    public function currentSolution(): HasOne
+    {
+        return $this->hasOne(CurrentSolution::class);
+    }
 }
